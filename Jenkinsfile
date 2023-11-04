@@ -27,7 +27,7 @@ spec:
          stage('My test') {
             steps {
                 container('docker') {
-                    sh "echo hello world!!"
+                    sh "echo hello world!!!!"
                 }
             }
         }
