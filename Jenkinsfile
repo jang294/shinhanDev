@@ -38,8 +38,8 @@ spec:
     stages {
         stage('Build Docker image') {
             environment {
-                REPOSITORY  = 'kimhj4270'
-                IMAGE       = 'godummyweb'
+                REPOSITORY  = 'jang1023'
+                IMAGE       = 'shinhan'
             }
             steps {
                 container('kaniko') {
@@ -62,16 +62,16 @@ spec:
                 script {
                     withCredentials([usernamePassword(credentialsId: 'git_cre', passwordVariable: 'password', usernameVariable: 'username')]) {
                         container('gitops') {
-                            git credentialsId: 'git_cre', url: 'https://github.com/junkmm/GitopsDummy.git', branch: 'main'
+                            git credentialsId: 'git_cre', url: 'https://github.com/jang294/shinhanDeploy.git', branch: 'main'
                             sh """
                             git init
                             git config --global --add safe.directory /home/jenkins/agent/workspace/demo2
                             git config --global user.email 'jenkins@jenkins.com'
                             git config --global user.name 'jenkins'
-                            sed -i 's@kimhj4270/godummyweb:.*@kimhj4270/godummyweb:${GIT_COMMIT}@g' deploy.yaml
+                            sed -i 's@jang1023/shinhan:.*@jang1023/shinhan:${GIT_COMMIT}@g' deploy.yaml
                             git add deploy.yaml
                             git commit -m 'Update: Image ${GIT_COMMIT}'
-                            git remote set-url origin https://${username}:${password}@github.com/junkmm/GitopsDummy.git
+                            git remote set-url origin https://${username}:${password}@github.com/jang294/shinhanDeploy.git
                             git push origin main
                             """
                         }
