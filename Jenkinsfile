@@ -70,7 +70,7 @@ spec:
                             git credentialsId: 'git_cre', url: 'https://github.com/jang294/shinhanDeploy.git', branch: 'main'
                             sh """
                             git init
-                            git config --global --add safe.directory /home/jenkins/agent/workspace/demo2
+                            git config --global --add safe.directory /home/jenkins/agent/workspace/test
                             git config --global user.email 'jenkins@jenkins.com'
                             git config --global user.name 'jenkins'
                             sed -i 's@jang1023/jeongeun:.*@jang1023/shinhan:${GIT_COMMIT}@g' deploy.yaml
