@@ -9,6 +9,7 @@ spec:
   dnsPolicy: Default
   containers:
   - name: kaniko
+    namespace: jenkins
     image: gcr.io/kaniko-project/executor:debug
     imagePullPolicy: Always
     command:
@@ -18,6 +19,7 @@ spec:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
   - name: gitops
+    namespace: jenkins
     image: bitnami/git:latest
     imagePullPolicy: Always
     command:
@@ -25,6 +27,7 @@ spec:
     tty: true
   volumes:
   - name: jenkins-docker-cfg
+    namespace: jenkins
     projected:
       sources:
       - secret:
