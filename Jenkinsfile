@@ -6,7 +6,7 @@ kind: Pod
 metadata:
   name: kaniko
 spec:
-  nodeName: 10.6.20.57
+  nodeName: k8s-worker01
   dnsPolicy: Default
   containers:
   - name: kaniko
