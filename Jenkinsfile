@@ -40,11 +40,17 @@ spec:
             environment {
                 REPOSITORY  = 'jang1023'
                 IMAGE       = 'shinhan'
+                REGISTRY_CREDENTIAL = 'docker_cre'
             }
             steps {
                 container('kaniko') {
                     script {
-                        sh "executor --dockerfile=Dockerfile --context=./ --destination=${REPOSITORY}/${IMAGE}:${GIT_COMMIT}"
+                        withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIAL, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh """
+                            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                            executor --dockerfile=Dockerfile --context=./ --destination=${REPOSITORY}/${IMAGE}:${GIT_COMMIT}
+                        """
+                        }
                     }
                 }
             }
