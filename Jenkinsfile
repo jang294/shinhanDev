@@ -1,6 +1,7 @@
 pipeline {
     agent {
         kubernetes {
+            label 'kubernetes.io/hostname=k8s-worker01'
             yaml """
 kind: Pod
 metadata:
