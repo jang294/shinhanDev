@@ -6,6 +6,7 @@ kind: Pod
 metadata:
   name: kaniko
 spec:
+  dnsPolicy: Default
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:debug
