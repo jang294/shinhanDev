@@ -1,12 +1,12 @@
 pipeline {
     agent {
         kubernetes {
-            label 'kubernetes.io/hostname=k8s-worker01'
             yaml """
 kind: Pod
 metadata:
   name: kaniko
 spec:
+  nodeName: 10.6.20.57
   dnsPolicy: Default
   containers:
   - name: kaniko
