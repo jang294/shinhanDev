@@ -63,14 +63,10 @@ spec:
         }
         stage('kubectl') {
             steps {
-                script {
-                        container('kubectl') {
-                            sh """
-                            kubectl set image deployment/test01 --all=${REPOSITORY}/${IMAGE}:${GIT_COMMIT} --selector=app=test -n ingress-nginx
-                            """
-                        }
-                }
-            }
-        }
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                sh 'cat test.yaml | sed -i 's@nginx:.*@jang1023/shinhan:${GIT_COMMIT}@g' test.yaml | kubectl apply -f -'
+             }
+          }
+       }
     }
 }
