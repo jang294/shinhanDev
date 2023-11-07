@@ -64,13 +64,11 @@ spec:
         stage('kubectl') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'kubeconfig')]) {
                         container('kubectl') {
                             sh """
                             kubectl set image deployment/test01 --all=${REPOSITORY}/${IMAGE}:${GIT_COMMIT} --selector=app=test -n ingress-nginx
                             """
                         }
-                    }
                 }
             }
         }
