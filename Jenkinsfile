@@ -41,7 +41,7 @@ spec:
     }
     environment {
         REPOSITORY  = 'jang1023'
-        IMAGE1       = 'shinhan'
+        IMAGE       = 'shinhan'
     }
     stages {
         stage('Build Docker image') {
