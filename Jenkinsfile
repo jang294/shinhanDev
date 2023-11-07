@@ -69,7 +69,6 @@ spec:
                             sh """
                             kubectl config use-context your-kubeconfig-context-name
                             kubectl set image deployment/test01 --all=${REPOSITORY}/${IMAGE}:${GIT_COMMIT}
-
                             """
                         }
                     }
