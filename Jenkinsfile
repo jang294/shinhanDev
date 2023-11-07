@@ -19,9 +19,9 @@ spec:
     volumeMounts:
       - name: jenkins-docker-cfg
         mountPath: /kaniko/.docker
-  - name: gitops
+  - name: kubectl
     namespace: jenkins
-    image: bitnami/git:latest
+    image: bitnami/kubectl
     imagePullPolicy: Always
     command:
     - /bin/sh
@@ -39,13 +39,12 @@ spec:
 """
         }
     }
-
+    environment {
+        REPOSITORY  = 'jang1023'
+        IMAGE1       = 'shinhan'
+    }
     stages {
         stage('Build Docker image') {
-            environment {
-                REPOSITORY  = 'jang1023'
-                IMAGE       = 'shinhan'
-            }
             steps {
                 container('kaniko') {
                     script {
@@ -62,22 +61,15 @@ spec:
             }
           }
         }
-        stage('GitOps') {
+        stage('kubectl') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'git_cre', passwordVariable: 'password', usernameVariable: 'username')]) {
-                        container('gitops') {
-                            git credentialsId: 'git_cre', url: 'https://github.com/jang294/shinhanDeploy.git', branch: 'main'
+                    withCredentials([file(credentialsId: 'kubeconfig')]) {
+                        container('kubectl') {
                             sh """
-                            git init
-                            git config --global --add safe.directory /home/jenkins/agent/workspace/test
-                            git config --global user.email 'jenkins@jenkins.com'
-                            git config --global user.name 'jenkins'
-                            sed -i 's@jang1023/jeongeun:.*@jang1023/shinhan:${GIT_COMMIT}@g' deploy.yaml
-                            git add deploy.yaml
-                            git commit -m 'Update: Image ${GIT_COMMIT}'
-                            git remote set-url origin https://${username}:${password}@github.com/jang294/shinhanDeploy.git
-                            git push origin main
+                            kubectl config use-context your-kubeconfig-context-name
+                            kubectl set image deployment/test01 --all=${REPOSITORY}/${IMAGE}:${GIT_COMMIT}
+
                             """
                         }
                     }
