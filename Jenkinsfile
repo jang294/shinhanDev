@@ -71,7 +71,7 @@ spec:
                             sh """
                             export KUBECONFIG=\$KUBECONFIG
                             kubectl set image deployment/test01 test=${REPOSITORY}/${IMAGE}:${GIT_COMMIT} -n ingress-nginx
-                            kubectl apply -f test.yaml -n ingress-nginx
+                            kubectl rollout restart deployment/test01 -n ingress-nginx
                             """
                         }
                     }
