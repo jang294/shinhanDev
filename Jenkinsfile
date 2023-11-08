@@ -21,13 +21,14 @@ spec:
         mountPath: /kaniko/.docker
   - name: kubectl
     namespace: jenkins
-    image: bitnami/kubectl
+    image: bitnami/kubectl:latest
     imagePullPolicy: Always
     command:
     - /bin/sh
     tty: true
-volumes:
+  volumes:
   - name: jenkins-docker-cfg
+    namespace: jenkins
     projected:
       sources:
       - secret:
@@ -52,20 +53,24 @@ volumes:
                 }
             }
         }
-        stage('Approval') {
-            steps {
-                slackSend(color: '#FF0000', message: "Please Check Deployment Approval (${env.JOB_URL})")
-                timeout(time: 15, unit: "MINUTES") {
-                    input message: 'Do you want to approve the deployment?', ok: 'YES'
-                }
+        stage('Approval'){
+          steps{
+            slackSend(color: '#FF0000', message: "Please Check Deployment Approval (${env.JOB_URL})")
+            timeout(time: 15, unit:"MINUTES"){
+              input message: 'Do you want to approve the deployment?', ok:'YES'
             }
+          }
         }
-        stage('kubectl') {
+        stage('Deploy') {
             steps {
-                container(name: 'kubectl') {
-                    script {
-                        withKubeConfig([credentialsId: 'kubeconfig']) {
-                            sh "cat test.yaml | sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml | kubectl apply -f - -n ingress-nginx"
+                script {
+                    withCredentials([credentialsId: 'kubeconfig']) {
+                        container('kubectl') {
+                            git credentialsId: 'git_cre', url: 'https://github.com/jang294/shinhanDeploy.git', branch: 'main'
+                            sh """
+                            sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
+                            kubectl apply -f test.yaml -n ingress-nginx
+                            """
                         }
                     }
                 }
