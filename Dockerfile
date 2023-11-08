@@ -1,9 +1,8 @@
-# Multi-stage build: Build stage
-FROM alpine as builder
-RUN apk --no-cache add curl
-WORKDIR /app
-RUN curl -o index.html https://github.com/jang294/shinhanDev.git/index.html
+FROM golang:1.20.1-alpine3.17 AS builder
+WORKDIR /work
+COPY . /work/
+RUN go build -o server main.go
 
-# Final stage: Copy the file into Nginx
-FROM nginx:alpine
-COPY --from=builder /app/index.html /usr/share/nginx/html/index.html
+FROM alpine:3.14
+COPY --from=builder /work/server /work/server
+ENTRYPOINT ["/work/server"]
