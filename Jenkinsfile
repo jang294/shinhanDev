@@ -64,7 +64,7 @@ spec:
         stage('Deploy') {
             steps {
                 script {
-                    withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://10.6.20.75:6443']) {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'config']) {
                         container('kubectl') {
                             sh """
                             use $FILE
