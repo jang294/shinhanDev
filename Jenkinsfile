@@ -70,8 +70,7 @@ spec:
                         container('kubectl') {
                             sh """
                             export KUBECONFIG=\$KUBECONFIG
-                            sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
-                            kubectl apply -f test.yaml -n ingress-nginx
+                            kubectl get nodes
                             """
                         }
                     }
