@@ -70,7 +70,7 @@ spec:
                         container('kubectl') {
                             sh """
                             export KUBECONFIG=\$KUBECONFIG
-                            kubectl set image deployment/test01 nginx=${REPOSITORY}/${IMAGE}:${GIT_COMMIT}
+                            kubectl set image deployment/test01 nginx=${REPOSITORY}/${IMAGE}:${GIT_COMMIT} -n ingress-nginx
                             kubectl apply -f test.yaml -n ingress-nginx
                             """
                         }
