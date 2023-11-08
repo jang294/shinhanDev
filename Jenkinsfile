@@ -66,7 +66,6 @@ spec:
                 script {
                     withCredentials([credentialsId: 'kubeconfig']) {
                         container('kubectl') {
-                            git credentialsId: 'git_cre', url: 'https://github.com/jang294/shinhanDeploy.git', branch: 'main'
                             sh """
                             sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
                             kubectl apply -f test.yaml -n ingress-nginx
