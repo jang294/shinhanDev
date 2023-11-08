@@ -63,7 +63,7 @@ spec:
         }
         stage('kubectl') {
     steps {
-        container(name: 'kubectl', image: 'bitnami/kubectl', imagePullPolicy: 'Always') {
+        container(name: 'kubectl') {
             script {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
                     sh "cat test.yaml | sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml | kubectl apply -f -"
