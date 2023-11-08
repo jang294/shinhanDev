@@ -26,6 +26,8 @@ spec:
     command:
     - /bin/sh
     tty: true
+    securityContext:
+      runAsUser: 0
   volumes:
   - name: jenkins-docker-cfg
     namespace: jenkins
