@@ -64,7 +64,7 @@ spec:
         stage('Deploy') {
             steps {
                 script {
-                    withCredentials([file(credentialsId: 'kubeconfig')]) {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
                         container('kubectl') {
                             sh """
                             sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
