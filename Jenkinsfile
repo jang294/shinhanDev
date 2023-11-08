@@ -69,7 +69,7 @@ spec:
                             sh """
                             use $FILE
                             sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
-                            kubectl apply -f test.yaml -n ingress-nginx
+                            kubectl apply -f test.yaml -n ingress-nginx --kubeconfig=$KUBECONFIG
                             """
                         }
                     }
