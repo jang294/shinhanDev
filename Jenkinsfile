@@ -64,9 +64,10 @@ spec:
         stage('Deploy') {
             steps {
                 script {
-                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'kubeconfig')]) {
                         container('kubectl') {
                             sh """
+                            use $FILE
                             sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml
                             kubectl apply -f test.yaml -n ingress-nginx
                             """
