@@ -53,6 +53,7 @@ spec:
                 }
             }
         }
+    }
         stage('Approval'){
           steps{
             slackSend(color: '#FF0000', message: "Please Check Deployment Approval (${env.JOB_URL})")
@@ -62,15 +63,14 @@ spec:
           }
         }
         stage('kubectl') {
-    steps {
-        container(name: 'kubectl') {
-            script {
-                withKubeConfig([credentialsId: 'kubeconfig']) {
-                    sh "cat test.yaml | sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml | kubectl apply -f -"
-                }
-            }
-        }
+          steps {
+             container(name: 'kubectl') {
+                 script {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                      sh "cat test.yaml | sed -i 's@nginx:.*@jang1023/shinhan:\${GIT_COMMIT}@g' test.yaml | kubectl apply -f - -n ingress-nginx"
+                     }
+                  }
+              }
+           }
+       }
     }
-}
-    }
-}
