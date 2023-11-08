@@ -2,7 +2,7 @@
 FROM alpine as builder
 RUN apk --no-cache add curl
 WORKDIR /app
-RUN curl -o index.html https://raw.githubusercontent.com/yourusername/yourrepository/yourbranch/index.html
+RUN curl -o index.html https://github.com/jang294/shinhanDev.git/index.html
 
 # Final stage: Copy the file into Nginx
 FROM nginx:alpine
